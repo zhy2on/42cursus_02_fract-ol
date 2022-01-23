@@ -6,93 +6,91 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/20 19:04:24 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/23 16:29:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fractol.h"
+#include "fractol.h"
 
-void	init_vars(t_frctl *frctl, t_img *img)
+int	key_press(int keycode, t_frctl *vars)
 {
-	frctl->x = -1;
-	frctl->y = -1;
-	frctl->mlx = mlx_init(); // mlx
-	frctl->win = mlx_new_window(frctl->mlx, WIN_W, WIN_H, "mlx 42");
-	frctl->xmin = -1.5;
-	frctl->xmax = 0.6;
-	frctl->ymin = -1.2;
-	frctl->ymax = 1.2;
-	frctl->itermax = 42;
-	img->img = mlx_new_image(frctl->mlx, WIN_W, WIN_H);
-	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->line_length,
-								&img->endian);
+	if (keycode == KEY_ESC)
+		exit(0);
+	return (0);
 }
 
-void	put_pix_on_img(t_img *img, int x, int y, t_color *clr)
+void	put_color(t_data *data, t_point point, t_clr clr)
 {
 	int	pos;
 
-	pos = x * img->bpp / 8 + y * img->line_length;
-	img->addr[pos] = clr->b;
-	img->addr[pos + 1] = clr->g;
-	img->addr[pos + 2] = clr->r;
+	pos = point.x * data->bpp / 8 + point.y * data->bpl;
+	data->buff[pos] = clr.b;
+	data->buff[pos + 1] = clr.g;
+	data->buff[pos + 2] = clr.r;
 }
 
-void	mandelbrot(t_frctl *frctl, t_img *img, t_cmplx *c, t_cmplx *z)
+void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 {
-	int		i;
-	t_cmplx	*tmp;
-	t_color	clr;
+	t_clr	clr;
+	t_cmplx	cmplx;
+	int		iter;
 
-	c->r = frctl->x / (WIN_W / (frctl->xmax - frctl->xmin)) + frctl->xmin;
-	c->i = frctl->y / (WIN_H / (frctl->ymax - frctl->ymin)) + frctl->ymin;
-	z->r = 0;
-	z->i = 0;
-	i = -1;
-	while (++i < frctl->itermax)
+	cmplx.cr = frctl->rmin + (frctl->rmax - frctl->rmin) * point.x / WIN_W;
+	cmplx.ci = frctl->imin + (frctl->imax - frctl->imin) * point.y / WIN_H;
+	cmplx.zr = 0;
+	cmplx.zi = 0;
+	iter = -1;
+	while (++iter < frctl->itermax)
 	{
-		tmp = z;
-		z->r = tmp->r * tmp->r - tmp->i * tmp->i + c->r;
-		z->i = 2 * tmp->r * z->i + c->i;
-		if ((z->r * z->r + z->i * z->i) > 4.0)
+		cmplx.tmpr = cmplx.zr;
+		cmplx.tmpr = cmplx.zr * cmplx.zr - cmplx.zi * cmplx.zi + cmplx.cr;
+		cmplx.zi = 2 * cmplx.zr * cmplx.zi + cmplx.ci;
+		cmplx.zr = cmplx.tmpr;
+		if (cmplx.zr * cmplx.zr + cmplx.zi * cmplx.zi > 4)
 			break ;
 	}
-	if (i == frctl->itermax)
+	clr.r = 1.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
+	clr.g = clr.r;
+	clr.b = clr.r;
+	put_color(data, point, clr);
+}
+
+void	draw_fractol(t_frctl *frctl, t_data *data)
+{
+	t_point	point;
+
+	point.y = -1;
+	while (++point.y < WIN_H)
 	{
-		clr.r = 0;
-		clr.g = 0;
-		clr. b = 0;
+		point.x = -1;
+		while (++point.x < WIN_W)
+			mandelbrot(frctl, data, point);
 	}
-	else
-	{
-		clr.r = (i * 7) % 255;
-		clr.g = (142 + (i * 2)) % 255;
-		clr.b = (255 - (i * 8)) % 255;
-	}
-	put_pix_on_img(img, frctl->x, frctl->y, &clr);		
+}
+
+void	init_vars(t_frctl *frctl, t_data *data)
+{
+	frctl->mlx = mlx_init();
+	frctl->win = mlx_new_window(frctl->mlx, WIN_W, WIN_H, "mlx 42");
+	data->img = mlx_new_image(frctl->mlx, WIN_W, WIN_H);
+	data->buff = mlx_get_data_addr(data->img, &data->bpp, &data->bpl,
+			&data->endian);
+	frctl->rmin = -2.5;
+	frctl->rmax = 1;
+	frctl->imin = -1;
+	frctl->imax = 1;
+	frctl->itermax = 1000;
 }
 
 int	main(void)
 {
 	t_frctl	frctl;
-	t_img	img;
-	t_cmplx c;
-	t_cmplx	z;
-	int		cnt_w;
-	int		cnt_h;
-	int		i;
-	
-	init_vars(&frctl, &img);
-	mlx_put_image_to_window(frctl.mlx, frctl.win, img.img, 0, 0);
-	frctl.y = -1;
-	while (++frctl.y< WIN_H)
-	{
-		frctl.x = -1;
-		while (++frctl.x < WIN_W)
-		{
-			mandelbrot(&frctl, &img, &c, &z);
-		}
-	}
+	t_data	data;
+
+	init_vars(&frctl, &data);
+	draw_fractol(&frctl, &data);
+	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_press, &frctl);
+	mlx_put_image_to_window(frctl.mlx, frctl.win, data.img, 0, 0);
 	mlx_loop(frctl.mlx);
 	return (0);
 }
