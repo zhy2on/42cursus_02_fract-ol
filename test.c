@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 16:45:27 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/23 15:39:04 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/23 16:22:15 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int main(void)
 	vars.win = mlx_new_window(vars.mlx, WIN_W, WIN_H, "mlx 42");
 	image = mlx_new_image(vars.mlx, WIN_W, WIN_H);
 
-	char *buffer = (char *)mlx_get_data_addr(image, &pixel_bits, &line_bytes, &endian);
+	char *buffer = mlx_get_data_addr(image, &pixel_bits, &line_bytes, &endian);
 
 	count_h = -1;
 	while (++count_h < WIN_H)
@@ -112,7 +112,7 @@ int main(void)
 			z.r = 0;
 			z.i = 0;
 			
-			iter = 1;
+			iter = -1;
 			while (++iter < max_iter)
 			{
 				tmp = z;
@@ -135,6 +135,5 @@ int main(void)
 	mlx_mouse_hook(vars.win, mouse_hook, &vars);
 	mlx_hook(vars.win, ON_KEYDOWN, 1L<<0, key_press, &vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, image, 0, 0);
-
 	mlx_loop(vars.mlx);
 }
