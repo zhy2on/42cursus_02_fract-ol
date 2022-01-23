@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 16:45:27 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/23 15:20:31 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/23 15:39:04 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 #define WIN_W 500
 #define WIN_H 500
-#define RANGE_CHANGE(x, a, b, min, max) (((b) - (a)) * ((x) - (min)) / ((max) - (min))) + (a)
 
 enum {
 	ON_KEYDOWN = 2,
@@ -130,24 +129,6 @@ int main(void)
 			buffer[pos] = clr.b;
 			buffer[pos + 1] = clr.g;
 			buffer[pos + 2] = clr.r;
-
-			/*
-			c.r = -0.75;
-			c.i = 0;
-			z.r = (count_w - (WIN_W/2))/(WIN_W/4);
-			z.i = (count_h - (WIN_H/2))/(WIN_H/4);
-			iter = -1;
-			while (++iter < 100)
-			{
-				tmp = z;
-				z.r = tmp.r*tmp.r - tmp.i*tmp.i + c.r;
-				z.i = 2*tmp.r*tmp.i + c.i;
-				if (z.r*z.r + z.i*z.i > 4)
-					break;
-			}
-			if (iter == 100)
-				buffer[count_h * WIN_W + count_w] = 0xFFFF;
-			*/
 		}
 	}
 	mlx_key_hook(vars.win, key_hook, &vars);
