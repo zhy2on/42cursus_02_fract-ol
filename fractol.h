@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/23 16:23:47 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/24 16:53:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ enum {
 	KEY_W = 13,
 	KEY_A = 0,
 	KEY_S = 1,
-	KEY_D = 2
+	KEY_D = 2,
+	LEFT_CLICK = 1
 };
 
 typedef struct s_clr
@@ -41,21 +42,21 @@ typedef struct s_clr
 	uint8_t	b;
 }				t_clr;
 
-typedef struct	s_cmplx
+typedef struct s_cmplx
 {
-	double		cr; //real
-	double		ci; //img
+	double		cr;
+	double		ci;
 	double		zr;
 	double		zi;
-	double		tmpr;
+	double		tmp;
 }				t_cmplx;
 
-typedef struct	s_point {
+typedef struct s_point {
 	int	x;
 	int	y;
 }				t_point;
 
-typedef struct	s_data {
+typedef struct s_data {
 	void	*img;
 	char	*buff;
 	int		bpp; //bits_per_pixel;
@@ -63,20 +64,26 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
-typedef struct	s_frctl {
+typedef struct s_frctl {
 	void	*mlx;
 	void	*win;
-	double	rmin;
-	double	rmax;
-	double	imin;
-	double	imax;
+	double	xmin;
+	double	xmax;
+	double	ymin;
+	double	ymax;
+	double	zoom;
 	int		itermax;
+	int		mouse_pressed;
+	t_data	data;
 }				t_frctl;
 
-void	init_vars(t_frctl *frctl, t_data *data);
+void	init_vars(t_frctl *frctl);
 int		key_press(int keycode, t_frctl *vars);
 void	put_color(t_data *data, t_point point, t_clr clr);
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
 void	draw_fractol(t_frctl *frctl, t_data *data);
+double	map(double n, double in_min, double in_max, double out_min, double out_max);
+void	zoom(t_frctl *frctl, t_data *data, int x, int y);
+int		mousewheel_hook(int button, int x, int y, t_frctl *frctl);
 
 #endif
