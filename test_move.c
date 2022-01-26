@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/26 16:14:23 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:42:47 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	put_color(t_data *data, t_point point, t_clr clr)
 {
 	int	pos;
 
+	if (point.x < 0 || point.y < 0 || point.x > WIN_W - 1|| point.y > WIN_H - 1)
+		return ;
 	pos = point.x * data->bpp / 8 + point.y * data->bpl;
 	data->buff[pos] = clr.b;
 	data->buff[pos + 1] = clr.g;
@@ -136,8 +138,6 @@ void	init_vars(t_frctl *frctl)
 	frctl->ymax = 1;
 	frctl->offx = -WIN_W / 2;
 	frctl->offy = -WIN_H / 2;
-	frctl->last_point.x = 0;
-	frctl->last_point.y = 0;
 	frctl->itermax = 128;
 	frctl->mouse_pressed = 0;
 }
