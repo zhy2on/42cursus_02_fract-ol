@@ -6,12 +6,31 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/26 15:45:28 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:14:23 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
+
+void	clear_image(t_frctl *frctl)
+{
+	t_point	point;
+	t_clr	clr;
+
+	clr.r = 0;
+	clr.g = 0;
+	clr.b = 0;
+	point.y = -1;
+	while (++point.y < WIN_H)
+	{
+		point.x = -1;
+		while (++point.x < WIN_W)
+		{
+			put_color(&frctl->data, point, clr);
+		}
+	}
+}
 
 int	mousemove_hook(int x, int y, t_frctl *frctl)
 {
@@ -19,6 +38,13 @@ int	mousemove_hook(int x, int y, t_frctl *frctl)
 
 	if (frctl->mouse_pressed)
 	{
+		frctl->offx -= x - frctl->lstx;
+		frctl->offy -= y - frctl->lsty;
+		frctl->lstx = x;
+		frctl->lsty = y;
+		printf("clear window\n");
+		clear_image(frctl);
+		draw_rectangle(frctl, &frctl->data);
 		printf("mouse move %d %d\n", x, y);
 	}
 	return (0);
@@ -29,6 +55,8 @@ int	mousepress_hook(int button, int x, int y, t_frctl *frctl)
 	if (button == LEFT_CLICK)
 	{
 		frctl->mouse_pressed = 1;
+		frctl->lstx = x;
+		frctl->lsty = y;
 		printf("mouse pressed button %d x,y %d %d\n", button, x, y);
 	}
 	else
@@ -41,20 +69,6 @@ int	mouserelease_hook(int button, int x, int y, t_frctl *frctl)
 	printf("mouse released button %d x,y %d %d\n", button, x, y);
 	frctl->mouse_pressed = 0;
 	return (0);
-}
-
-void	zoom(t_frctl *frctl, t_data *data, int x, int y)
-{
-	t_cmplx	cmplx;
-
-	cmplx.cr = map(x, 0, WIN_W, frctl->xmin, frctl->xmax);
-	cmplx.ci = map(y, 0, WIN_H, frctl->ymin, frctl->ymax);
-	cmplx.tmp = frctl->xmax - frctl->xmin;
-	frctl->xmin = cmplx.cr - (cmplx.tmp / frctl->zoom);
-	frctl->xmax = cmplx.cr + (cmplx.tmp / frctl->zoom);
-	cmplx.tmp = frctl->ymax - frctl->ymin;
-	frctl->ymin = cmplx.ci - (cmplx.tmp / frctl->zoom);
-	frctl->ymax = cmplx.ci + (cmplx.tmp / frctl->zoom);
 }
 
 int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
@@ -89,47 +103,6 @@ double	map(double n, double in_min, double in_max, double out_min, double out_ma
 	return ((n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
 }
 
-void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
-{
-	t_clr	clr;
-	t_cmplx	cmplx;
-	int		iter;
-	int		bright;
-
-	cmplx.cr = map(point.x, 0, WIN_W, frctl->xmin, frctl->xmax);
-	cmplx.ci = map(point.y, 0, WIN_H, frctl->ymin, frctl->ymax);
-	cmplx.zr = 0;
-	cmplx.zi = 0;
-	iter = -1;
-	while (++iter < frctl->itermax)
-	{
-		cmplx.tmp = cmplx.zr;
-		cmplx.tmp = cmplx.zr * cmplx.zr - cmplx.zi * cmplx.zi + cmplx.cr;
-		cmplx.zi = 2 * cmplx.zr * cmplx.zi + cmplx.ci;
-		cmplx.zr = cmplx.tmp;
-		if (cmplx.zr * cmplx.zr + cmplx.zi * cmplx.zi > 4)
-			break ;
-	}
-	clr.r = 1.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
-	clr.g = clr.r;
-	clr.b = clr.r;
-	put_color(data, point, clr);
-}
-
-void	draw_fractol(t_frctl *frctl, t_data *data)
-{
-	t_point	point;
-
-	point.y = -1;
-	while (++point.y < WIN_H)
-	{
-		point.x = -1;
-		while (++point.x < WIN_W)
-			mandelbrot(frctl, data, point);
-	}
-	mlx_put_image_to_window(frctl->mlx, frctl->win, data->img, 0, 0);
-}
-
 void	draw_rectangle(t_frctl *frctl, t_data *data)
 {
 	t_point	point;
@@ -138,11 +111,11 @@ void	draw_rectangle(t_frctl *frctl, t_data *data)
 	clr.r = 255;
 	clr.g = 255;
 	clr.b = 255;
-	point.y = -1;
-	while (++point.y < 100)
+	point.y = -1 - frctl->offy;
+	while (++point.y < 100 - frctl->offy)
 	{
-		point.x = -1;
-		while (++point.x < 100)
+		point.x = -1 - frctl->offx;
+		while (++point.x < 100 - frctl->offx)
 		{
 			put_color(data, point, clr);
 		}
@@ -161,6 +134,8 @@ void	init_vars(t_frctl *frctl)
 	frctl->xmax = 1;
 	frctl->ymin = -1;
 	frctl->ymax = 1;
+	frctl->offx = -WIN_W / 2;
+	frctl->offy = -WIN_H / 2;
 	frctl->last_point.x = 0;
 	frctl->last_point.y = 0;
 	frctl->itermax = 128;
