@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/27 18:33:37 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 19:31:11 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	mousemove_hook(int x, int y, t_frctl *frctl)
 
 	if (frctl->mouse_pressed)
 	{
-		frctl->offx -= x - frctl->lstx;
-		frctl->offy -= y - frctl->lsty;
+		frctl->offx -= (x - frctl->lstx) / frctl->zoom;
+		frctl->offy -= (y - frctl->lsty) / frctl->zoom;
 		frctl->lstx = x;
 		frctl->lsty = y;
 		printf("clear window\n");
@@ -80,20 +80,29 @@ int	mouserelease_hook(int button, int x, int y, t_frctl *frctl)
 
 int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 {
-	t_point	point;
-	t_cmplx	cmplx;
+	t_point	tmp;
+	t_point	before;
+	t_point	after;
 
+	tmp.x = x;
+	tmp.y = y;
 	if (button == ON_MOUSEDOWN)
 	{
-		printf("mosue down\n");
+		before = calc_point(tmp, frctl);
 		frctl->zoom *= 0.999f;
+		after = calc_point(tmp, frctl);
+		frctl->offx += after.x - before.x;
+		frctl->offy += after.y - before.y;
 		clear_image(frctl);
 		draw_rectangle(frctl, &frctl->data);
 	}
 	else if (button == ON_MOUSEUP)
 	{
-		printf("mouse up\n");
+		before = calc_point(tmp, frctl);
 		frctl->zoom *= 1.001f;
+		after = calc_point(tmp, frctl);
+		frctl->offx += after.x - before.x;
+		frctl->offy += after.y - before.y;
 		clear_image(frctl);
 		draw_rectangle(frctl, &frctl->data);
 	}
@@ -136,10 +145,10 @@ void	draw_rectangle(t_frctl *frctl, t_data *data)
 	clr.g = 255;
 	clr.b = 255;
 	point.y = -1;
-	while (++point.y < 100)
+	while (++point.y < WIN_H)
 	{
 		point.x = -1;
-		while (++point.x < 100)
+		while (++point.x < WIN_W)
 		{
 			new_point = calc_point(point, frctl);
 			put_color(data, new_point, clr);
