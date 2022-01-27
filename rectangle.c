@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/27 20:08:59 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:12:43 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	put_color(t_data *data, t_point point, t_clr clr)
 {
 	int	pos;
 
-	if (point.x < 0 || point.y < 0 || point.x > WIN_W - 1|| point.y > WIN_H - 1)
+	if (point.x < 0 || point.y < 0 || point.x > WIN_W - 1 || point.y > WIN_H - 1)
 		return ;
 	pos = point.x * data->bpp / 8 + point.y * data->bpl;
 	data->buff[pos] = clr.b;
