@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/27 20:13:43 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:22:22 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,32 @@ int	mouserelease_hook(int button, int x, int y, t_frctl *frctl)
 
 int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 {
+	t_point	tmp;
+	t_point	before;
+	t_point	after;
+
+	tmp.x = x;
+	tmp.y = y;
+	if (button == ON_MOUSEDOWN)
+	{
+		before = calc_point(tmp, frctl);
+		frctl->zoom *= 1.0 / 1.1f;
+		after = calc_point(tmp, frctl);
+		frctl->offx += after.x - before.x;
+		frctl->offy += after.y - before.y;
+		clear_image(frctl);
+		draw_fractol(frctl, &frctl->data);
+	}
+	else if (button == ON_MOUSEUP)
+	{
+		before = calc_point(tmp, frctl);
+		frctl->zoom *= 1.1f;
+		after = calc_point(tmp, frctl);
+		frctl->offx += after.x - before.x;
+		frctl->offy += after.y - before.y;
+		clear_image(frctl);
+		draw_fractol(frctl, &frctl->data);
+	}
 	return (0);
 }
 
