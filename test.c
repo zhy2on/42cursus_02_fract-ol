@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_move.c                                        :+:      :+:    :+:   */
+/*   rectangle.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/27 20:12:43 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:36:23 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,13 @@ void	put_color(t_data *data, t_point point, t_clr clr)
 {
 	int	pos;
 
-	if (point.x < 0 || point.y < 0 || point.x > WIN_W - 1 || point.y > WIN_H - 1)
+	if (point.x < 0 || point.y < 0
+		|| point.x > WIN_W - 1 || point.y > WIN_H - 1)
 		return ;
 	pos = point.x * data->bpp / 8 + point.y * data->bpl;
 	data->buff[pos] = clr.b;
 	data->buff[pos + 1] = clr.g;
 	data->buff[pos + 2] = clr.r;
-}
-
-double	map(double n, double in_min, double in_max, double out_min, double out_max)
-{
-	return ((n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
 }
 
 void	draw_rectangle(t_frctl *frctl, t_data *data)
