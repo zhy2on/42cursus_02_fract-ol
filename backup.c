@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 16:45:27 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/23 16:22:15 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:36:18 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct	s_cmplx
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
+	int		mouse_lock;
 }				t_vars;
 
 int	key_hook(int keycode, t_vars *vars)
@@ -57,9 +58,15 @@ int	key_hook(int keycode, t_vars *vars)
 	return (0);
 }
 
-int	mouse_hook(int keycode, t_vars *vars)
+int	mouse_hook(int keycode, int x, int y, t_vars *vars)
 {
-	printf("Hello from mouse_hook!\n");
+	printf("Hello from mouse_hook! %d %d %d\n", keycode, x, y);
+	return (0);
+}
+
+int	mousemove_hook(int x, int y, t_vars *vars)
+{
+	printf("mouse move %d %d\n", x, y);
 	return (0);
 }
 
@@ -68,6 +75,11 @@ int	key_press(int keycode, t_vars *vars)
 	if (keycode == KEY_ESC)
 		exit(0);
 	return (0);
+}
+
+double	map(double n, double in_min, double in_max, double out_min, double out_max)
+{
+	return ((n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
 }
 
 int main(void)
@@ -96,6 +108,7 @@ int main(void)
 	t_clr	clr;
 
 	vars.mlx = mlx_init();
+	vars.mouse_lock = 1;
 	vars.win = mlx_new_window(vars.mlx, WIN_W, WIN_H, "mlx 42");
 	image = mlx_new_image(vars.mlx, WIN_W, WIN_H);
 
