@@ -6,12 +6,19 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/26 17:42:47 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 18:33:37 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
+
+t_point	calc_point(t_point point, t_frctl *frctl)
+{
+	point.x = (point.x - frctl->offx) * frctl->zoom;
+	point.y = (point.y - frctl->offy) * frctl->zoom;
+	return (point);
+}
 
 void	clear_image(t_frctl *frctl)
 {
@@ -76,6 +83,20 @@ int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 	t_point	point;
 	t_cmplx	cmplx;
 
+	if (button == ON_MOUSEDOWN)
+	{
+		printf("mosue down\n");
+		frctl->zoom *= 0.999f;
+		clear_image(frctl);
+		draw_rectangle(frctl, &frctl->data);
+	}
+	else if (button == ON_MOUSEUP)
+	{
+		printf("mouse up\n");
+		frctl->zoom *= 1.001f;
+		clear_image(frctl);
+		draw_rectangle(frctl, &frctl->data);
+	}
 	return (0);
 }
 
@@ -108,18 +129,20 @@ double	map(double n, double in_min, double in_max, double out_min, double out_ma
 void	draw_rectangle(t_frctl *frctl, t_data *data)
 {
 	t_point	point;
+	t_point	new_point;
 	t_clr	clr;
 
 	clr.r = 255;
 	clr.g = 255;
 	clr.b = 255;
-	point.y = -1 - frctl->offy;
-	while (++point.y < 100 - frctl->offy)
+	point.y = -1;
+	while (++point.y < 100)
 	{
-		point.x = -1 - frctl->offx;
-		while (++point.x < 100 - frctl->offx)
+		point.x = -1;
+		while (++point.x < 100)
 		{
-			put_color(data, point, clr);
+			new_point = calc_point(point, frctl);
+			put_color(data, new_point, clr);
 		}
 	}
 	mlx_put_image_to_window(frctl->mlx, frctl->win, data->img, 0, 0);
@@ -138,6 +161,7 @@ void	init_vars(t_frctl *frctl)
 	frctl->ymax = 1;
 	frctl->offx = -WIN_W / 2;
 	frctl->offy = -WIN_H / 2;
+	frctl->zoom = 1;
 	frctl->itermax = 128;
 	frctl->mouse_pressed = 0;
 }
