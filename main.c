@@ -6,17 +6,51 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/24 16:53:47 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:13:43 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
 
+t_point	calc_point(t_point point, t_frctl *frctl)
+{
+	point.x = (point.x - frctl->offx) * frctl->zoom;
+	point.y = (point.y - frctl->offy) * frctl->zoom;
+	return (point);
+}
+
+void	clear_image(t_frctl *frctl)
+{
+	t_point	point;
+	t_clr	clr;
+
+	clr.r = 0;
+	clr.g = 0;
+	clr.b = 0;
+	point.y = -1;
+	while (++point.y < WIN_H)
+	{
+		point.x = -1;
+		while (++point.x < WIN_W)
+			put_color(&frctl->data, point, clr);
+	}
+}
+
 int	mousemove_hook(int x, int y, t_frctl *frctl)
 {
+	t_cmplx	cmplx;
+
 	if (frctl->mouse_pressed)
+	{
+		frctl->offx -= (x - frctl->lstx) / frctl->zoom;
+		frctl->offy -= (y - frctl->lsty) / frctl->zoom;
+		frctl->lstx = x;
+		frctl->lsty = y;
+		clear_image(frctl);
+		draw_fractol(frctl, &frctl->data);
 		printf("mouse move %d %d\n", x, y);
+	}
 	return (0);
 }
 
@@ -24,8 +58,10 @@ int	mousepress_hook(int button, int x, int y, t_frctl *frctl)
 {
 	if (button == LEFT_CLICK)
 	{
-		printf("mouse pressed button %d x,y %d %d\n", button, x, y);
 		frctl->mouse_pressed = 1;
+		frctl->lstx = x;
+		frctl->lsty = y;
+		printf("mouse pressed button %d x,y %d %d\n", button, x, y);
 	}
 	else
 		mousewheel_hook(button, x, y, frctl);
@@ -39,41 +75,8 @@ int	mouserelease_hook(int button, int x, int y, t_frctl *frctl)
 	return (0);
 }
 
-void	zoom(t_frctl *frctl, t_data *data, int x, int y)
-{
-	t_cmplx	cmplx;
-
-	cmplx.cr = map(x, 0, WIN_W, frctl->xmin, frctl->xmax);
-	cmplx.ci = map(y, 0, WIN_H, frctl->ymin, frctl->ymax);
-	cmplx.tmp = frctl->xmax - frctl->xmin;
-	frctl->xmin = cmplx.cr - (cmplx.tmp / frctl->zoom);
-	frctl->xmax = cmplx.cr + (cmplx.tmp / frctl->zoom);
-	cmplx.tmp = frctl->ymax - frctl->ymin;
-	frctl->ymin = cmplx.ci - (cmplx.tmp / frctl->zoom);
-	frctl->ymax = cmplx.ci + (cmplx.tmp / frctl->zoom);
-}
-
 int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 {
-	t_point	point;
-	t_cmplx	cmplx;
-
-	point.x = x;
-	point.y = y;
-	if (button == ON_MOUSEDOWN)
-	{
-		printf("mouse down %d %d\n", x, y);
-		frctl->zoom = 2;
-		zoom(frctl, &(frctl->data), x, y);
-		draw_fractol(frctl, &(frctl->data));
-	}
-	else if (button == ON_MOUSEUP)
-	{
-		printf("mouse up %d %d\n", x, y);
-		frctl->zoom = 1.0 / 2;
-		zoom(frctl, &(frctl->data), x, y);
-		draw_fractol(frctl, &(frctl->data));
-	}
 	return (0);
 }
 
@@ -90,42 +93,47 @@ void	put_color(t_data *data, t_point point, t_clr clr)
 {
 	int	pos;
 
+	if (point.x < 0 || point.y < 0 ||
+			point.x > WIN_W - 1 || point.y > WIN_H - 1)
+		return ;
 	pos = point.x * data->bpp / 8 + point.y * data->bpl;
 	data->buff[pos] = clr.b;
 	data->buff[pos + 1] = clr.g;
 	data->buff[pos + 2] = clr.r;
 }
 
-double	map(double n, double in_min, double in_max, double out_min, double out_max)
+t_cmplx	window_to_world(int x, int y, t_frctl *fr)
 {
-	return ((n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+	t_cmplx	ret;
+
+	ret.r = ((double)x / WIN_W) * (fr->xmax - fr->xmin) + fr->xmin;
+	ret.i = ((double)y / WIN_H) * (fr->ymax - fr->ymin) + fr->ymin;
+	return (ret);
 }
 
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 {
 	t_clr	clr;
-	t_cmplx	cmplx;
+	t_cmplx	c;
+	t_cmplx	z;
+	t_cmplx	tmp;
 	int		iter;
-	int		bright;
 
-	cmplx.cr = map(point.x, 0, WIN_W, frctl->xmin, frctl->xmax);
-	cmplx.ci = map(point.y, 0, WIN_H, frctl->ymin, frctl->ymax);
-	cmplx.zr = 0;
-	cmplx.zi = 0;
+	c = window_to_world(point.x, point.y, frctl);
+	z = window_to_world(point.x, point.y, frctl);
 	iter = -1;
 	while (++iter < frctl->itermax)
 	{
-		cmplx.tmp = cmplx.zr;
-		cmplx.tmp = cmplx.zr * cmplx.zr - cmplx.zi * cmplx.zi + cmplx.cr;
-		cmplx.zi = 2 * cmplx.zr * cmplx.zi + cmplx.ci;
-		cmplx.zr = cmplx.tmp;
-		if (cmplx.zr * cmplx.zr + cmplx.zi * cmplx.zi > 4)
+		tmp = z;
+		z.r = tmp.r * tmp.r - tmp.i * tmp.i + c.r;
+		z.i = 2 * tmp.r * tmp.i + c.i;
+		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
 	clr.r = 1.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
 	clr.g = clr.r;
 	clr.b = clr.r;
-	put_color(data, point, clr);
+	put_color(data, calc_point(point, frctl), clr);
 }
 
 void	draw_fractol(t_frctl *frctl, t_data *data)
@@ -153,6 +161,9 @@ void	init_vars(t_frctl *frctl)
 	frctl->xmax = 1;
 	frctl->ymin = -1;
 	frctl->ymax = 1;
+	frctl->offx = 0;
+	frctl->offy = 0;
+	frctl->zoom = 1;
 	frctl->itermax = 128;
 	frctl->mouse_pressed = 0;
 }
