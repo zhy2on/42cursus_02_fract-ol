@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/27 19:31:11 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:08:59 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,10 +149,7 @@ void	draw_rectangle(t_frctl *frctl, t_data *data)
 	{
 		point.x = -1;
 		while (++point.x < WIN_W)
-		{
-			new_point = calc_point(point, frctl);
-			put_color(data, new_point, clr);
-		}
+			put_color(data, calc_point(point, frctl), clr);
 	}
 	mlx_put_image_to_window(frctl->mlx, frctl->win, data->img, 0, 0);
 }
