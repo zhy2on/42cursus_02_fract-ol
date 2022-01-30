@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/29 14:55:34 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/30 18:27:09 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ void	put_color(t_data *data, t_point point, t_clr clr);
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
 void	draw_fractol(t_frctl *frctl, t_data *data);
 void	zoom(t_frctl *frctl, t_data *data, int x, int y);
-int		mousewheel_hook(int button, int x, int y, t_frctl *frctl);
+int		mouse_hook(int button, int x, int y, t_frctl *frctl);
 
 #endif
