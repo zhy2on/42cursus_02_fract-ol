@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/30 00:02:00 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/30 18:09:08 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,36 @@ int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 	point.y = y;
 	if (button == ON_MOUSEDOWN)
 	{
+		printf("x y: %d %d\n", x, y);
 		screen_to_world(&point, &before, frctl);
 		frctl->zoom *= z;
 		screen_to_world(&point, &after, frctl);
 		frctl->offx += before.r - after.r;
 		frctl->offy += before.i - after.i;
+		printf("before after: %f %f %f %f\n", before.r, before.i, after.r, after.i);
 		draw_fractol(frctl, &frctl->data);
 	}
 	else if (button == ON_MOUSEUP)
 	{
+		printf("x y: %d %d\n", x, y);
 		screen_to_world(&point, &before, frctl);
 		z = 1.0 / z;
 		frctl->zoom *= z;
 		screen_to_world(&point, &after, frctl);
-		printf("before after: %f %f %f %f\n", before.r, before.i, after.r, after.i);
 		frctl->offx += before.r - after.r;
 		frctl->offy += before.i - after.i;
+		printf("before after: %f %f %f %f\n", before.r, before.i, after.r, after.i);
+		/*
+		z = 1.0 / z;
+		screen_to_world(&point, &before, frctl);
+		frctl->xmin += (before.r - frctl->xmin) * (1 - z);
+		frctl->xmax -= (frctl->xmax - before.r) * (1 - z);
+		frctl->ymin += (before.i - frctl->ymin) * (1 - z);
+		frctl->ymax -= (frctl->ymax - before.i) * (1 - z);
+		screen_to_world(&point, &after, frctl);
+		printf("before after: %f %f %f %f\n", before.r, before.i, after.r, after.i);
 		draw_fractol(frctl, &frctl->data);
+		*/
 	}
 	return (0);
 }
@@ -50,8 +63,6 @@ void	put_color(t_data *data, t_point point, t_clr clr)
 {
 	int	pos;
 
-	if (point.x < 0 || point.y < 0 || point.x >= WIN_W || point.y >= WIN_H)
-		return ;
 	pos = point.x * data->bpp / 8 + point.y * data->bpl;
 	data->buff[pos] = clr.b;
 	data->buff[pos + 1] = clr.g;
@@ -62,7 +73,7 @@ int	key_press(int keycode, t_frctl *frctl)
 {
 	double	offset;
 
-	offset = 0.1f * frctl->zoom;
+	offset = 0.2f * frctl->zoom;
 	if (keycode == KEY_ESC)
 		exit(0);
 	else if (keycode == UP_ARROW)
@@ -95,8 +106,8 @@ void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 
 	xscale = (double)(fr->xmax - fr->xmin) / WIN_W;
 	yscale = (double)(fr->ymax - fr->ymin) / WIN_H;
-	cmplx->r = point->x * xscale * fr->zoom + fr->xmin + fr->offx;
-	cmplx->i = point->y * yscale * fr->zoom + fr->ymin + fr->offy;
+	cmplx->r = point->x * xscale + fr->xmin + fr->offx;
+	cmplx->i = point->y * yscale + fr->ymin + fr->offy;
 }
 
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
@@ -108,7 +119,8 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 	int		iter;
 
 	screen_to_world(&point, &c, frctl);
-	screen_to_world(&point, &z, frctl);
+	z.r = 0;
+	z.i = 0;
 	iter = -1;
 	while (++iter < frctl->itermax)
 	{
