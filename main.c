@@ -6,11 +6,24 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/30 19:11:42 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/30 20:04:15 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	while (n && *s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+		n--;
+	}
+	if (n)
+		return ((unsigned char)(*s1) - (unsigned char)(*s2));
+	return (0);
+}
 
 void	draw_fractol(t_frctl *frctl, t_data *data)
 {
@@ -21,13 +34,24 @@ void	draw_fractol(t_frctl *frctl, t_data *data)
 	{
 		point.x = -1;
 		while (++point.x < WIN_W)
-			mandelbrot(frctl, data, point);
+		{
+			if (frctl->frctl_num == 1)
+				julia(frctl, data, point);
+			else if (frctl->frctl_num == 2)
+				mandelbrot(frctl, data, point);
+		}
 	}
 	mlx_put_image_to_window(frctl->mlx, frctl->win, data->img, 0, 0);
 }
 
-void	init_vars(t_frctl *frctl)
+void	init_vars(t_frctl *frctl, char *argv)
 {
+	if (ft_strncmp(argv, "julia", 5) == 0)
+			frctl->frctl_num = 1;
+	else if (ft_strncmp(argv, "mandelbrot", 10) == 0)
+			frctl->frctl_num = 2;
+	else
+		exit(0);
 	frctl->mlx = mlx_init();
 	frctl->win = mlx_new_window(frctl->mlx, WIN_W, WIN_H, "mlx 42");
 	frctl->data.img = mlx_new_image(frctl->mlx, WIN_W, WIN_H);
@@ -47,7 +71,7 @@ int	main(int argc, char **argv)
 {
 	t_frctl	frctl;
 
-	init_vars(&frctl);
+	init_vars(&frctl, argv[1]);
 	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_press, &frctl);
 	mlx_hook(frctl.win, ON_MOUSEDOWN, 1L << 2, mouse_hook, &frctl);
 	draw_fractol(&frctl, &frctl.data);
