@@ -6,14 +6,14 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/30 18:09:08 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/30 18:58:36 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test_frctl.h"
 #include <stdio.h>
 
-int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
+int	mouse_hook(int button, int x, int y, t_frctl *frctl)
 {
 	double	z;
 	t_cmplx	before;
@@ -23,6 +23,10 @@ int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 	z = 1.05f;
 	point.x = x;
 	point.y = y;
+	if (button == LEFT_CLICK)
+	{
+		printf("xmin xmax ymin ymax: %f %f %f %f\n", frctl->xmin, frctl->xmax, frctl->ymin, frctl->ymax);
+	}
 	if (button == ON_MOUSEDOWN)
 	{
 		printf("x y: %d %d\n", x, y);
@@ -30,7 +34,7 @@ int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 		frctl->zoom *= z;
 		screen_to_world(&point, &after, frctl);
 		frctl->offx += before.r - after.r;
-		frctl->offy += before.i - after.i;
+		frctl->offy -= before.i - after.i;
 		printf("before after: %f %f %f %f\n", before.r, before.i, after.r, after.i);
 		draw_fractol(frctl, &frctl->data);
 	}
@@ -42,19 +46,9 @@ int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 		frctl->zoom *= z;
 		screen_to_world(&point, &after, frctl);
 		frctl->offx += before.r - after.r;
-		frctl->offy += before.i - after.i;
-		printf("before after: %f %f %f %f\n", before.r, before.i, after.r, after.i);
-		/*
-		z = 1.0 / z;
-		screen_to_world(&point, &before, frctl);
-		frctl->xmin += (before.r - frctl->xmin) * (1 - z);
-		frctl->xmax -= (frctl->xmax - before.r) * (1 - z);
-		frctl->ymin += (before.i - frctl->ymin) * (1 - z);
-		frctl->ymax -= (frctl->ymax - before.i) * (1 - z);
-		screen_to_world(&point, &after, frctl);
+		frctl->offy -= before.i - after.i;
 		printf("before after: %f %f %f %f\n", before.r, before.i, after.r, after.i);
 		draw_fractol(frctl, &frctl->data);
-		*/
 	}
 	return (0);
 }
@@ -106,8 +100,8 @@ void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 
 	xscale = (double)(fr->xmax - fr->xmin) / WIN_W;
 	yscale = (double)(fr->ymax - fr->ymin) / WIN_H;
-	cmplx->r = point->x * xscale + fr->xmin + fr->offx;
-	cmplx->i = point->y * yscale + fr->ymin + fr->offy;
+	cmplx->r = point->x * xscale * fr->zoom + fr->xmin + fr->offx;
+	cmplx->i = point->y * yscale * fr->zoom + fr->ymin + fr->offy;
 }
 
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
@@ -130,9 +124,9 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
-	clr.r = (frctl->itermax - iter) % 255;
-	clr.g = (frctl->itermax - iter) % 255 + 10;
-	clr.b = (frctl->itermax - iter) % 255 + 20;
+	clr.r = 1.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
+	clr.g = clr.r;
+	clr.b = clr.r;
 	put_color(data, point, clr);
 }
 
@@ -164,7 +158,7 @@ void	init_vars(t_frctl *frctl)
 	frctl->offx = 0;
 	frctl->offy = 0;
 	frctl->zoom = 1;
-	frctl->itermax = 128;
+	frctl->itermax = 42;
 }
 
 int	main(void)
@@ -173,7 +167,7 @@ int	main(void)
 
 	init_vars(&frctl);
 	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_press, &frctl);
-	mlx_hook(frctl.win, ON_MOUSEDOWN, 1L << 2, mousewheel_hook, &frctl);
+	mlx_hook(frctl.win, ON_MOUSEDOWN, 1L << 2, mouse_hook, &frctl);
 	draw_fractol(&frctl, &frctl.data);
 	mlx_loop(frctl.mlx);
 	return (0);
