@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rectangle.c                                        :+:      :+:    :+:   */
+/*   test_rect.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/27 20:36:23 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/01/30 18:19:39 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "test.h"
 #include <stdio.h>
 
 t_point	calc_point(t_point point, t_frctl *frctl)
 {
-	point.x = (point.x - frctl->offx) * frctl->zoom;
-	point.y = (point.y - frctl->offy) * frctl->zoom;
+	//point.x = (point.x - frctl->offx) * frctl->zoom;
+	//point.y = (point.y - frctl->offy) * frctl->zoom;
 	return (point);
+}
+
+void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *frctl)
+{
+	double	xscale;
+	double	yscale;
+
+	xscale = (double)(fr->xmax - fr->xmin) / WIN_W;
+	yscale = (double)(fr->ymax - fr->ymin) / WIN_H;
+	cmplx->r = point->x * xscale * fr->zoom + fr->xmin + fr->offx;
+	cmplx->i = point->y * yscale * fr->zoom + fr->ymin + fr->offy;
 }
 
 void	clear_image(t_frctl *frctl)
@@ -45,10 +56,10 @@ int	mousemove_hook(int x, int y, t_frctl *frctl)
 
 	if (frctl->mouse_pressed)
 	{
-		frctl->offx -= (x - frctl->lstx) / frctl->zoom;
-		frctl->offy -= (y - frctl->lsty) / frctl->zoom;
-		frctl->lstx = x;
-		frctl->lsty = y;
+		//frctl->offx -= (x - frctl->lstx) / frctl->zoom;
+		//frctl->offy -= (y - frctl->lsty) / frctl->zoom;
+		//frctl->lstx = x;
+		//frctl->lsty = y;
 		printf("clear window\n");
 		clear_image(frctl);
 		draw_rectangle(frctl, &frctl->data);
@@ -62,8 +73,8 @@ int	mousepress_hook(int button, int x, int y, t_frctl *frctl)
 	if (button == LEFT_CLICK)
 	{
 		frctl->mouse_pressed = 1;
-		frctl->lstx = x;
-		frctl->lsty = y;
+		//frctl->lstx = x;
+		//frctl->lsty = y;
 		printf("mouse pressed button %d x,y %d %d\n", button, x, y);
 	}
 	else
@@ -88,21 +99,15 @@ int	mousewheel_hook(int button, int x, int y, t_frctl *frctl)
 	tmp.y = y;
 	if (button == ON_MOUSEDOWN)
 	{
-		before = calc_point(tmp, frctl);
 		frctl->zoom *= 0.999f;
 		after = calc_point(tmp, frctl);
-		frctl->offx += after.x - before.x;
-		frctl->offy += after.y - before.y;
 		clear_image(frctl);
 		draw_rectangle(frctl, &frctl->data);
 	}
 	else if (button == ON_MOUSEUP)
 	{
-		before = calc_point(tmp, frctl);
 		frctl->zoom *= 1.001f;
 		after = calc_point(tmp, frctl);
-		frctl->offx += after.x - before.x;
-		frctl->offy += after.y - before.y;
 		clear_image(frctl);
 		draw_rectangle(frctl, &frctl->data);
 	}
@@ -160,9 +165,6 @@ void	init_vars(t_frctl *frctl)
 	frctl->xmin = -2.5;
 	frctl->xmax = 1;
 	frctl->ymin = -1;
-	frctl->ymax = 1;
-	frctl->offx = -WIN_W / 2;
-	frctl->offy = -WIN_H / 2;
 	frctl->zoom = 1;
 	frctl->itermax = 128;
 	frctl->mouse_pressed = 0;
