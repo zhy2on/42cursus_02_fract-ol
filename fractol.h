@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/30 20:04:04 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 03:11:45 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <mlx.h>
+# include <math.h>
 # include <stdio.h>
 
 # define WIN_W	960
@@ -80,10 +81,12 @@ typedef struct s_frctl {
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	draw_fractol(t_frctl *frctl, t_data *data);
 void	init_vars(t_frctl *frctl, char *argv);
+void	init_vars_sub(t_frctl *frctl);
 void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr);
 void	put_color(t_data *data, t_point point, t_clr clr);
 void	julia(t_frctl *frctl, t_data *data, t_point point);
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
+void	spider(t_frctl *frctl, t_data *data, t_point point);
 int		key_press(int keycode, t_frctl *frctl);
 int		mouse_hook(int button, int x, int y, t_frctl *frctl);
 
