@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 00:24:39 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 03:45:55 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ enum {
 	KEY_ESC = 53,
 	KEY_1 = 18,
 	KEY_2 = 19,
+	KEY_3 = 20,
 	LEFT_ARROW= 123,
 	RIGHT_ARROW = 124,
 	UP_ARROW = 126,
 	DOWN_ARROW = 125,
-	LEFT_CLICK = 1
 };
 
 typedef struct s_clr
@@ -48,6 +48,7 @@ typedef struct s_clrset
 	int		clrsize;
 	t_clr	clrset1[5];
 	t_clr	clrset2[6];
+	t_clr	clrset3[7];
 }				t_clrset;
 
 typedef struct s_cmplx

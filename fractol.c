@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:08:48 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 00:24:16 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 04:10:29 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 
 	xscale = (fr->xmax - fr->xmin) / WIN_W;
 	yscale = (fr->ymax - fr->ymin) / WIN_H;
-	cmplx->r = (double)point->x * xscale * fr->zoom + fr->xmin + fr->offx;
-	cmplx->i = (double)point->y * yscale * fr->zoom + fr->ymin + fr->offy;
+	cmplx->r = (point->x + fr->offx) * xscale * fr->zoom + fr->xmin + fr->offx;
+	cmplx->i = (point->y + fr->offy) * yscale * fr->zoom + fr->ymin + fr->offy;
 }
 
 void	spider(t_frctl *frctl, t_data *data, t_point point)
@@ -68,6 +68,8 @@ void	julia(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
+	if (iter == frctl->itermax)
+		iter = 0;
 	put_color(data, point, get_color(iter, frctl, &frctl->clrset));
 }
 
@@ -91,5 +93,7 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
+	if (iter == frctl->itermax && frctl->clrset.clrsize == 7)
+		iter = 0;
 	put_color(data, point, get_color(iter, frctl, &frctl->clrset));
 }

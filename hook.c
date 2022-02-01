@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:09:52 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 00:24:19 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 03:45:46 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ int	mouse_hook(int button, int x, int y, t_frctl *frctl)
 	z = 1.1f;
 	point.x = x;
 	point.y = y;
-	if (button == ON_MOUSEDOWN)
+	if (button == ON_MOUSEUP)
 	{
 		screen_to_world(&point, &before, frctl);
-		frctl->zoom *= z;
+		frctl->zoom *= 0.9;
 	}
-	else if (button == ON_MOUSEUP)
+	else if (button == ON_MOUSEDOWN)
 	{
 		screen_to_world(&point, &before, frctl);
-		frctl->zoom *= 1.0 / z;
+		frctl->zoom *= 1.1;
 	}
 	else
 		return (0);
@@ -60,6 +60,8 @@ int	key_hook(int keycode, t_frctl *frctl)
 		frctl->clrset.clrsize = 5;
 	else if (keycode == KEY_2)
 		frctl->clrset.clrsize = 6;
+	else if (keycode == KEY_3)
+		frctl->clrset.clrsize = 7;
 	else
 		return (0);
 	draw_fractol(frctl, &frctl->data);
