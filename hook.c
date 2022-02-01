@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:09:52 by jihoh             #+#    #+#             */
-/*   Updated: 2022/01/30 19:29:23 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 03:46:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	key_press(int keycode, t_frctl *frctl)
 	double	offset;
 
 	offset = 0.2f * frctl->zoom;
+	printf("keycode: %d\n", keycode);
 	if (keycode == KEY_ESC)
 		exit(0);
 	else if (keycode == UP_ARROW)

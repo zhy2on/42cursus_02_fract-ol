@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:08:48 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 03:11:20 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 04:52:37 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	spider(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
-	clr.r = 1.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
+	clr.r = 3.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
 	clr.g = clr.r;
 	clr.b = clr.r;
 	put_color(data, point, clr);
@@ -81,7 +81,7 @@ void	julia(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
-	clr.r = 1.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
+	clr.r = 3.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
 	clr.g = clr.r;
 	clr.b = clr.r;
 	put_color(data, point, clr);
@@ -107,7 +107,7 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
-	clr.r = 1.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
+	clr.r = 3.0 * (frctl->itermax - iter) / frctl->itermax * 0xff;
 	clr.g = clr.r;
 	clr.b = clr.r;
 	put_color(data, point, clr);

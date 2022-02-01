@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 03:18:43 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 04:09:16 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	init_vars_sub(t_frctl *frctl)
 	{
 		frctl->xmin = -2.5;
 		frctl->xmax = 1.0;
-		frctl->ymin = -1.0;
-		frctl->ymax = 1.0;
+		frctl->ymin = -1.1;
+		frctl->ymax = 1.1;
 	}
 	else if (frctl->frctl_num == 3)
 	{

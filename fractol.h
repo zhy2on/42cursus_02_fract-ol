@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 03:11:45 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 03:54:14 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ enum {
 	ON_MOUSEDOWN = 4,
 	ON_MOUSEUP = 5,
 	ON_MOUSEMOVE = 6,
-	ON_EXPOSE = 12,
-	ON_DESTROY = 17,
 	KEY_ESC = 53,
 	LEFT_ARROW= 123,
 	RIGHT_ARROW = 124,
