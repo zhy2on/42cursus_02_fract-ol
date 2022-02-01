@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:08:48 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 04:52:37 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 18:44:09 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 
 	xscale = (double)(fr->xmax - fr->xmin) / WIN_W;
 	yscale = (double)(fr->ymax - fr->ymin) / WIN_H;
-	cmplx->r = point->x * xscale * fr->zoom + fr->xmin + fr->offx;
-	cmplx->i = point->y * yscale * fr->zoom + fr->ymin + fr->offy;
+	cmplx->r = (double)point->x * xscale * fr->zoom + fr->xmin + fr->offx;
+	cmplx->i = (double)point->y * yscale * fr->zoom + fr->ymin + fr->offy;
 }
 
 void	put_color(t_data *data, t_point point, t_clr clr)

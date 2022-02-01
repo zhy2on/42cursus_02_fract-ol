@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:09:52 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 03:46:28 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 19:00:36 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ int	mouse_hook(int button, int x, int y, t_frctl *frctl)
 		return (0);
 	screen_to_world(&point, &after, frctl);
 	frctl->offx += before.r - after.r;
-	frctl->offy -= before.i - after.i;
+	frctl->offy += before.i - after.i;
 	draw_fractol(frctl, &frctl->data);
 	return (0);
 }
 
-int	key_press(int keycode, t_frctl *frctl)
+int	key_hook(int keycode, t_frctl *frctl)
 {
 	double	offset;
 

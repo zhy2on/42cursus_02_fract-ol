@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 03:54:14 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 19:00:30 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdlib.h>
 # include <mlx.h>
-# include <math.h>
 # include <stdio.h>
 
 # define WIN_W	960
@@ -64,7 +63,7 @@ typedef struct s_data {
 typedef struct s_frctl {
 	void	*mlx;
 	void	*win;
-	int		frctl_num;
+	char	type;
 	double	xmin;
 	double	xmax;
 	double	ymin;
@@ -85,7 +84,7 @@ void	put_color(t_data *data, t_point point, t_clr clr);
 void	julia(t_frctl *frctl, t_data *data, t_point point);
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
 void	spider(t_frctl *frctl, t_data *data, t_point point);
-int		key_press(int keycode, t_frctl *frctl);
+int		key_hook(int keycode, t_frctl *frctl);
 int		mouse_hook(int button, int x, int y, t_frctl *frctl);
 
 #endif

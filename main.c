@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 04:09:16 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 19:02:26 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	draw_fractol(t_frctl *frctl, t_data *data)
 		point.x = -1;
 		while (++point.x < WIN_W)
 		{
-			if (frctl->frctl_num == 1)
+			if (frctl->type == 1)
 				julia(frctl, data, point);
-			else if (frctl->frctl_num == 2)
+			else if (frctl->type == 2)
 				mandelbrot(frctl, data, point);
 			else
 				spider(frctl, data, point);
@@ -48,18 +48,21 @@ void	draw_fractol(t_frctl *frctl, t_data *data)
 
 void	init_vars_sub(t_frctl *frctl)
 {
-	frctl->xmin = -2.1;
-	frctl->xmax = 1.9;
-	frctl->ymin = -1.2;
-	frctl->ymax = 1.2;
-	if (frctl->frctl_num == 2)
+	if (frctl->type == 1)
 	{
-		frctl->xmin = -2.5;
-		frctl->xmax = 1.0;
+		frctl->xmin = -2.1;
+		frctl->xmax = 1.9;
+		frctl->ymin = -1.2;
+		frctl->ymax = 1.2;
+	}
+	else if (frctl->type == 2)
+	{
+		frctl->xmin = -2.7;
+		frctl->xmax = 1.2;
 		frctl->ymin = -1.1;
 		frctl->ymax = 1.1;
 	}
-	else if (frctl->frctl_num == 3)
+	else if (frctl->type == 3)
 	{
 		frctl->xmin = -3.0;
 		frctl->xmax = 1.0;
@@ -75,11 +78,11 @@ void	init_vars_sub(t_frctl *frctl)
 void	init_vars(t_frctl *frctl, char *argv)
 {
 	if (ft_strncmp(argv, "julia", 5) == 0)
-		frctl->frctl_num = 1;
+		frctl->type = 1;
 	else if (ft_strncmp(argv, "mandelbrot", 10) == 0)
-		frctl->frctl_num = 2;
+		frctl->type = 2;
 	else if (ft_strncmp(argv, "spider", 6) == 0)
-		frctl->frctl_num = 3;
+		frctl->type = 3;
 	else
 		exit(0);
 	frctl->mlx = mlx_init();
@@ -97,7 +100,7 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		return (0);
 	init_vars(&frctl, argv[1]);
-	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_press, &frctl);
+	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_hook, &frctl);
 	mlx_hook(frctl.win, ON_MOUSEDOWN, 1L << 2, mouse_hook, &frctl);
 	draw_fractol(&frctl, &frctl.data);
 	mlx_loop(frctl.mlx);
