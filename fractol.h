@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 19:56:18 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 23:16:41 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ typedef struct s_clr
 	unsigned char	b;
 }				t_clr;
 
+typedef struct s_clrset
+{
+	t_clr	clrset1[5];
+	t_clr	clrset2[6];
+}				t_clrset;
+
 typedef struct s_cmplx
 {
 	double	r;
@@ -61,24 +67,25 @@ typedef struct s_data {
 }				t_data;
 
 typedef struct s_frctl {
-	void	*mlx;
-	void	*win;
-	char	type;
-	double	xmin;
-	double	xmax;
-	double	ymin;
-	double	ymax;
-	double	offx;
-	double	offy;
-	double	zoom;
-	int		itermax;
-	t_data	data;
+	void		*mlx;
+	void		*win;
+	char		type;
+	double		xmin;
+	double		xmax;
+	double		ymin;
+	double		ymax;
+	double		offx;
+	double		offy;
+	double		zoom;
+	int			itermax;
+	t_clrset	clrset;
+	t_data		data;
 }				t_frctl;
 
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	draw_fractol(t_frctl *frctl, t_data *data);
 void	init_vars(t_frctl *frctl, char *argv);
-void	init_vars_sub(t_frctl *frctl);
+void	init_viewset(t_frctl *frctl);
 void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr);
 void	put_color(t_data *data, t_point point, t_clr clr);
 void	julia(t_frctl *frctl, t_data *data, t_point point);
@@ -86,5 +93,9 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
 void	spider(t_frctl *frctl, t_data *data, t_point point);
 int		key_hook(int keycode, t_frctl *frctl);
 int		mouse_hook(int button, int x, int y, t_frctl *frctl);
+t_clr	set_clr(unsigned char r, unsigned char g, unsigned char b);
+void	init_clrset(t_clrset *clrset);
+t_clr	linear_interpolation(t_clr v, t_clr u, double a);
+t_clr	get_color(int iter, t_frctl *frctl, t_clr *clrset);
 
 #endif

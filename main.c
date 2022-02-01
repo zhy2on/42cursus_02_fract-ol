@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 19:56:28 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 23:17:24 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	draw_fractol(t_frctl *frctl, t_data *data)
 	mlx_put_image_to_window(frctl->mlx, frctl->win, data->img, 0, 0);
 }
 
-void	init_vars_sub(t_frctl *frctl)
+void	init_viewset(t_frctl *frctl)
 {
 	if (frctl->type == 1)
 	{
@@ -71,7 +71,7 @@ void	init_vars_sub(t_frctl *frctl)
 	}
 	frctl->offx = 0;
 	frctl->offy = 0;
-	frctl->zoom = 1.0f;
+	frctl->zoom = 1;
 	frctl->itermax = 42;
 }
 
@@ -90,7 +90,8 @@ void	init_vars(t_frctl *frctl, char *argv)
 	frctl->data.img = mlx_new_image(frctl->mlx, WIN_W, WIN_H);
 	frctl->data.buff = mlx_get_data_addr(frctl->data.img, &frctl->data.bpp,
 			&frctl->data.bpl, &frctl->data.endian);
-	init_vars_sub(frctl);
+	init_viewset(frctl);
+	init_clrset(&frctl->clrset);
 }
 
 int	main(int argc, char **argv)
