@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:08:48 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 23:13:55 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 23:45:52 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 	cmplx->i = (double)point->y * yscale * fr->zoom + fr->ymin + fr->offy;
 }
 
-void	put_color(t_data *data, t_point point, t_clr clr)
-{
-	int	pos;
-
-	pos = point.x * data->bpp / 8 + point.y * data->bpl;
-	data->buff[pos] = clr.b;
-	data->buff[pos + 1] = clr.g;
-	data->buff[pos + 2] = clr.r;
-}
-
 void	spider(t_frctl *frctl, t_data *data, t_point point)
 {
 	t_clr	clr;
@@ -45,6 +35,7 @@ void	spider(t_frctl *frctl, t_data *data, t_point point)
 	z.r = 0;
 	z.i = 0;
 	iter = -1;
+	frctl->itermax = 42;
 	while (++iter < frctl->itermax)
 	{
 		tmp = z;
@@ -71,6 +62,7 @@ void	julia(t_frctl *frctl, t_data *data, t_point point)
 	c.r = 0.285;
 	c.i = 0.01;
 	iter = -1;
+	frctl->itermax = 128;
 	while (++iter < frctl->itermax)
 	{
 		tmp = z;
@@ -95,6 +87,7 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 	z.r = 0;
 	z.i = 0;
 	iter = -1;
+	frctl->itermax = 42;
 	while (++iter < frctl->itermax)
 	{
 		tmp = z;

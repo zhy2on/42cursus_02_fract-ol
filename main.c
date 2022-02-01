@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 23:17:24 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 23:43:23 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	init_viewset(t_frctl *frctl)
 		frctl->xmax = 1.2;
 		frctl->ymin = -1.1;
 		frctl->ymax = 1.1;
+		frctl->itermax = 42;
 	}
 	else if (frctl->type == 3)
 	{
@@ -72,7 +73,6 @@ void	init_viewset(t_frctl *frctl)
 	frctl->offx = 0;
 	frctl->offy = 0;
 	frctl->zoom = 1;
-	frctl->itermax = 42;
 }
 
 void	init_vars(t_frctl *frctl, char *argv)
