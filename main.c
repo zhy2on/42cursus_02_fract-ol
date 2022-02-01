@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 19:02:26 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 19:56:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	init_vars_sub(t_frctl *frctl)
 	}
 	frctl->offx = 0;
 	frctl->offy = 0;
-	frctl->zoom = 1;
+	frctl->zoom = 1.0f;
 	frctl->itermax = 42;
 }
 

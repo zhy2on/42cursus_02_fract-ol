@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:09:52 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 19:00:36 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/01 20:12:58 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	mouse_hook(int button, int x, int y, t_frctl *frctl)
 	t_cmplx	after;
 	t_point	point;
 
-	z = 1.05f;
+	z = 1.1f;
 	point.x = x;
 	point.y = y;
 	if (button == ON_MOUSEDOWN)
