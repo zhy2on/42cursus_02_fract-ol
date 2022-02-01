@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 23:22:00 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 00:19:53 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ enum {
 	ON_MOUSEUP = 5,
 	ON_MOUSEMOVE = 6,
 	KEY_ESC = 53,
+	KEY_1 = 18,
+	KEY_2 = 19,
 	LEFT_ARROW= 123,
 	RIGHT_ARROW = 124,
 	UP_ARROW = 126,
@@ -43,6 +45,7 @@ typedef struct s_clr
 
 typedef struct s_clrset
 {
+	int		clrsize;
 	t_clr	clrset1[5];
 	t_clr	clrset2[6];
 }				t_clrset;
@@ -87,15 +90,15 @@ void	draw_fractol(t_frctl *frctl, t_data *data);
 void	init_vars(t_frctl *frctl, char *argv);
 void	init_viewset(t_frctl *frctl);
 void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr);
-void	put_color(t_data *data, t_point point, t_clr clr);
 void	julia(t_frctl *frctl, t_data *data, t_point point);
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
 void	spider(t_frctl *frctl, t_data *data, t_point point);
 int		key_hook(int keycode, t_frctl *frctl);
 int		mouse_hook(int button, int x, int y, t_frctl *frctl);
+void	put_color(t_data *data, t_point point, t_clr clr);
 t_clr	set_color(unsigned char r, unsigned char g, unsigned char b);
 void	init_clrset(t_clrset *clrset);
 t_clr	linear_interpolation(t_clr v, t_clr u, double a);
-t_clr	get_color(int iter, t_frctl *frctl, t_clr *clrset);
+t_clr	get_color(int iter, t_frctl *frctl, t_clrset *clrset);
 
 #endif

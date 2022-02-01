@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:08:48 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 23:45:52 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 00:21:38 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 
 void	spider(t_frctl *frctl, t_data *data, t_point point)
 {
-	t_clr	clr;
 	t_cmplx	c;
 	t_cmplx	z;
 	t_cmplx	tmp;
@@ -46,13 +45,11 @@ void	spider(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
-	clr = get_color(iter, frctl, frctl->clrset.clrset1);
-	put_color(data, point, clr);
+	put_color(data, point, get_color(iter, frctl, &frctl->clrset));
 }
 
 void	julia(t_frctl *frctl, t_data *data, t_point point)
 {
-	t_clr	clr;
 	t_cmplx	c;
 	t_cmplx	z;
 	t_cmplx	tmp;
@@ -71,13 +68,11 @@ void	julia(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
-	clr = get_color(iter, frctl, frctl->clrset.clrset1);
-	put_color(data, point, clr);
+	put_color(data, point, get_color(iter, frctl, &frctl->clrset));
 }
 
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 {
-	t_clr	clr;
 	t_cmplx	c;
 	t_cmplx	z;
 	t_cmplx	tmp;
@@ -96,6 +91,5 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 		if (z.r * z.r + z.i * z.i > 4.0)
 			break ;
 	}
-	clr = get_color(iter, frctl, frctl->clrset.clrset1);
-	put_color(data, point, clr);
+	put_color(data, point, get_color(iter, frctl, &frctl->clrset));
 }

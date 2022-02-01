@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:09:52 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/01 20:12:58 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 00:19:04 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	key_hook(int keycode, t_frctl *frctl)
 	double	offset;
 
 	offset = 0.2f * frctl->zoom;
-	printf("keycode: %d\n", keycode);
 	if (keycode == KEY_ESC)
 		exit(0);
 	else if (keycode == UP_ARROW)
@@ -57,6 +56,10 @@ int	key_hook(int keycode, t_frctl *frctl)
 		frctl->offx -= offset;
 	else if (keycode == RIGHT_ARROW)
 		frctl->offx += offset;
+	else if (keycode == KEY_1)
+		frctl->clrset.clrsize = 5;
+	else if (keycode == KEY_2)
+		frctl->clrset.clrsize = 6;
 	else
 		return (0);
 	draw_fractol(frctl, &frctl->data);

@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 22:36:11 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 00:01:00 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 00:13:29 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	put_color(t_data *data, t_point point, t_clr clr)
 
 void	init_clrset(t_clrset *clrset)
 {
+	clrset->clrsize = 5;
 	clrset->clrset1[0] = set_color(0, 7, 100);
 	clrset->clrset1[1] = set_color(32, 107, 203);
 	clrset->clrset1[2] = set_color(237, 255, 255);
@@ -44,6 +45,7 @@ void	init_clrset(t_clrset *clrset)
 	clrset->clrset2[2] = set_color(251, 255, 121);
 	clrset->clrset2[3] = set_color(62, 223, 89);
 	clrset->clrset2[4] = set_color(43, 30, 218);
+	clrset->clrset2[5] = set_color(0, 255, 247);
 }
 
 t_clr	linear_interpolation(t_clr v, t_clr u, double a)
@@ -54,21 +56,26 @@ t_clr	linear_interpolation(t_clr v, t_clr u, double a)
 	return (set_color(b * v.r + a * u.r, b * v.g + a * u.g, b * v.b + a * u.b));
 }
 
-t_clr	get_color(int iter, t_frctl *frctl, t_clr *clrset)
+t_clr	get_color(int iter, t_frctl *frctl, t_clrset *clrset)
 {
 	double	mu;
 	size_t	i_mu;
 	t_clr	clr1;
 	t_clr	clr2;
+	t_clr	*clr_arr;
 
+	if (clrset->clrsize == 5)
+		clr_arr = clrset->clrset1;
+	else
+		clr_arr = clrset->clrset2;
 	if (iter == frctl->itermax)
 		iter = 0;
-	mu = 1.0 * iter / frctl->itermax * 4;
+	mu = 1.0 * iter / frctl->itermax * (clrset->clrsize - 1);
 	i_mu = (size_t)mu;
-	clr1 = clrset[i_mu];
-	if (i_mu + 1 < 4)
-		clr2 = clrset[i_mu + 1];
+	clr1 = clr_arr[i_mu];
+	if (i_mu + 1 < clrset->clrsize - 1)
+		clr2 = clr_arr[i_mu + 1];
 	else
-		clr2 = clrset[4];
+		clr2 = clr_arr[clrset->clrsize - 1];
 	return (linear_interpolation(clr1, clr2, mu - i_mu));
 }
