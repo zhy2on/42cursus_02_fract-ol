@@ -6,12 +6,11 @@
 #    By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/03 01:01:21 by jihoh             #+#    #+#              #
-#    Updated: 2022/02/03 02:23:22 by jihoh            ###   ########.fr        #
+#    Updated: 2022/02/03 02:26:03 by jihoh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-
 CFLAGS = -lmlx -framework OpenGL -framework AppKit -Werror -Wextra -Wall
 
 NAME = fractol
