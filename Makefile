@@ -6,7 +6,7 @@
 #    By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/03 01:01:21 by jihoh             #+#    #+#              #
-#    Updated: 2022/02/03 02:26:03 by jihoh            ###   ########.fr        #
+#    Updated: 2022/02/03 03:19:13 by jihoh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,12 @@ OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)
 
-$(NAME):
-	@$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@
 	@printf '\033[32m[ ✔ ] %s\n\033[0m' "done"
+
+.c.o:
+	$(CC) -c $< -o $@
 
 clean :
 	@rm -rf $(OBJS)
