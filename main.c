@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/03 00:52:06 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/03 01:16:45 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,19 +72,22 @@ void	init_viewset(t_frctl *frctl)
 	}
 	frctl->offx = 0;
 	frctl->offy = 0;
-	frctl->zoom = 1;
+	frctl->zoom = 1.0;
 }
 
 void	init_vars(t_frctl *frctl, char *argv)
 {
-	if (ft_strncmp(argv, "julia", 5) == 0)
+	if (argv && ft_strncmp(argv, "julia", 5) == 0)
 		frctl->type = 1;
-	else if (ft_strncmp(argv, "mandelbrot", 10) == 0)
+	else if (argv && ft_strncmp(argv, "mandelbrot", 10) == 0)
 		frctl->type = 2;
-	else if (ft_strncmp(argv, "spider", 6) == 0)
+	else if (argv && ft_strncmp(argv, "spider", 6) == 0)
 		frctl->type = 3;
 	else
+	{
+		write(1, "Usage: ./fractol + 'julia' or 'mandelbrot' or 'spider'\n", 56);
 		exit(0);
+	}
 	frctl->mlx = mlx_init();
 	frctl->win = mlx_new_window(frctl->mlx, WIN_W, WIN_H, "jihoh's fractol");
 	frctl->data.img = mlx_new_image(frctl->mlx, WIN_W, WIN_H);
@@ -98,8 +101,6 @@ int	main(int argc, char **argv)
 {
 	t_frctl	frctl;
 
-	if (argc < 2)
-		return (0);
 	init_vars(&frctl, argv[1]);
 	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_hook, &frctl);
 	mlx_hook(frctl.win, ON_MOUSEDOWN, 1L << 2, mouse_hook, &frctl);
