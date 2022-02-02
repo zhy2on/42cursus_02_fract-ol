@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 00:24:23 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 22:31:54 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,28 @@ void	init_viewset(t_frctl *frctl)
 {
 	if (frctl->type == 1)
 	{
-		frctl->xmin = -2.1;
-		frctl->xmax = 1.9;
-		frctl->ymin = -1.2;
-		frctl->ymax = 1.2;
+		frctl->rmin = -2.1;
+		frctl->rmax = 1.9;
+		frctl->imin = -1.2;
+		frctl->imax = 1.2;
 	}
 	else if (frctl->type == 2)
 	{
-		frctl->xmin = -2.7;
-		frctl->xmax = 1.2;
-		frctl->ymin = -1.1;
-		frctl->ymax = 1.1;
+		frctl->rmin = -2.7;
+		frctl->rmax = 1.2;
+		frctl->imin = -1.1;
+		frctl->imax = 1.1;
 		frctl->itermax = 42;
 	}
 	else if (frctl->type == 3)
 	{
-		frctl->xmin = -3.0;
-		frctl->xmax = 1.0;
-		frctl->ymin = -1.2;
-		frctl->ymax = 1.2;
+		frctl->rmin = -3.0;
+		frctl->rmax = 1.0;
+		frctl->imin = -1.2;
+		frctl->imax = 1.2;
 	}
-	frctl->offx = 0;
-	frctl->offy = 0;
+	frctl->off_r = 0;
+	frctl->off_i = 0;
 	frctl->zoom = 1;
 }
 
