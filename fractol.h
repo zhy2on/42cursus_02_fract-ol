@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 22:31:57 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/03 00:55:03 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 
 # include <stdlib.h>
 # include <mlx.h>
-# include <stdio.h>
 
 # define WIN_W	960
 # define WIN_H	540
 
 enum {
 	ON_KEYDOWN = 2,
-	ON_KEYUP = 3,
 	ON_MOUSEDOWN = 4,
-	ON_MOUSEUP = 5,
-	ON_MOUSEMOVE = 6,
+	SCROLL_DOWN = 4,
+	SCROLL_UP = 5,
 	KEY_ESC = 53,
 	KEY_1 = 18,
 	KEY_2 = 19,
@@ -78,24 +76,40 @@ typedef struct s_frctl {
 	double		rmax;
 	double		imin;
 	double		imax;
-	double		off_r;
-	double		off_i;
 	double		zoom;
+	double		offx;
+	double		offy;
 	int			itermax;
 	t_clrset	clrset;
 	t_data		data;
 }				t_frctl;
 
+/*
+*** main.c ***
+*/
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	draw_fractol(t_frctl *frctl, t_data *data);
 void	init_vars(t_frctl *frctl, char *argv);
 void	init_viewset(t_frctl *frctl);
+void	draw_fractol(t_frctl *frctl, t_data *data);
+
+/*
+*** hook.c ***
+*/
+void	world_to_screen(t_cmplx *cmplx, t_point *point, t_frctl *fr);
+int		key_hook(int keycode, t_frctl *frctl);
+int		mouse_hook(int button, int x, int y, t_frctl *frctl);
+
+/*
+*** fractol.c ***
+*/
 void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr);
 void	julia(t_frctl *frctl, t_data *data, t_point point);
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
 void	spider(t_frctl *frctl, t_data *data, t_point point);
-int		key_hook(int keycode, t_frctl *frctl);
-int		mouse_hook(int button, int x, int y, t_frctl *frctl);
+
+/*
+*** color.c ***
+*/
 void	put_color(t_data *data, t_point point, t_clr clr);
 t_clr	set_color(unsigned char r, unsigned char g, unsigned char b);
 void	init_clrset(t_clrset *clrset);

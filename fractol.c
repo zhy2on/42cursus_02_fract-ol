@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:08:48 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 22:35:59 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/02 23:49:40 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,13 @@
 
 void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 {
-
 	double	xscale;
 	double	yscale;
 
 	xscale = (fr->rmax - fr->rmin) / WIN_W;
 	yscale = (fr->imax - fr->imin) / WIN_H;
-	cmplx->r = point->x * xscale * fr->zoom + fr->rmin + fr->off_r;
-	cmplx->i = point->y * yscale * fr->zoom + fr->imin + fr->off_i;
-	/*
-	cmplx->r = (double)point->x / (WIN_W / (fr->rmax - fr->rmin))
-		* fr->zoom + fr->rmin + fr->off_r;
-	cmplx->i = (double)point->y / (WIN_H / (fr->imax - fr->imin))
-		* fr->zoom + fr->imin + fr->off_i;
-	*/
+	cmplx->r = (point->x + fr->offx) * xscale * fr->zoom + fr->rmin;
+	cmplx->i = (point->y + fr->offy) * yscale * fr->zoom + fr->imin;
 }
 
 void	spider(t_frctl *frctl, t_data *data, t_point point)
