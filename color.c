@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 22:36:11 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/02 20:20:36 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/03 01:33:01 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_clr	get_color(int iter, t_frctl *frctl, t_clrset *clrset)
 	mu = 1.0 * iter / frctl->itermax * (clrset->clrsize - 1);
 	i_mu = (size_t)mu;
 	clr1 = clr_arr[i_mu];
-	if (i_mu + 1 < clrset->clrsize - 1)
+	if ((int)i_mu + 1 < clrset->clrsize - 1)
 		clr2 = clr_arr[i_mu + 1];
 	else
 		clr2 = clr_arr[clrset->clrsize - 1];
