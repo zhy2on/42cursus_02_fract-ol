@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/03 03:51:43 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/03 16:46:27 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ typedef struct s_frctl {
 	void		*mlx;
 	void		*win;
 	char		type;
-	double		rmin;
-	double		rmax;
-	double		imin;
-	double		imax;
+	double		xmin;
+	double		xmax;
+	double		ymin;
+	double		ymax;
 	double		zoom;
 	double		offx;
 	double		offy;
