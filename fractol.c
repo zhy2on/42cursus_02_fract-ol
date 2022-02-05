@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:08:48 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/03 16:49:24 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/05 16:31:24 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr)
 {
-	double	xscale;
-	double	yscale;
+	double	rscale;
+	double	iscale;
 
-	xscale = (fr->xmax - fr->xmin) / WIN_W;
-	yscale = (fr->ymax - fr->ymin) / WIN_H;
-	cmplx->r = (point->x + fr->offx) * xscale * fr->zoom + fr->xmin;
-	cmplx->i = (point->y + fr->offy) * yscale * fr->zoom + fr->ymin;
+	rscale = (fr->rmax - fr->rmin) / WIN_W;
+	iscale = (fr->imax - fr->imin) / WIN_H;
+	cmplx->r = (point->x + fr->offx) * rscale * fr->zoom + fr->rmin;
+	cmplx->i = (point->y + fr->offy) * iscale * fr->zoom + fr->imin;
 }
 
 void	spider(t_frctl *frctl, t_data *data, t_point point)
@@ -58,6 +58,8 @@ void	julia(t_frctl *frctl, t_data *data, t_point point)
 	screen_to_world(&point, &z, frctl);
 	c.r = 0.285;
 	c.i = 0.01;
+	if (frctl->is_use_param)
+		c = frctl->julia_c;
 	iter = -1;
 	frctl->itermax = 128;
 	while (++iter < frctl->itermax)
@@ -94,4 +96,25 @@ void	mandelbrot(t_frctl *frctl, t_data *data, t_point point)
 			break ;
 	}
 	put_color(data, point, get_color(iter, frctl, &frctl->clrset));
+}
+
+void	draw_fractol(t_frctl *frctl, t_data *data)
+{
+	t_point	point;
+
+	point.y = -1;
+	while (++point.y < WIN_H)
+	{
+		point.x = -1;
+		while (++point.x < WIN_W)
+		{
+			if (frctl->type == 1)
+				julia(frctl, data, point);
+			else if (frctl->type == 2)
+				mandelbrot(frctl, data, point);
+			else
+				spider(frctl, data, point);
+		}
+	}
+	mlx_put_image_to_window(frctl->mlx, frctl->win, data->img, 0, 0);
 }

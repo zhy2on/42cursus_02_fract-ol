@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/03 16:46:27 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/05 16:29:32 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,16 @@ typedef struct s_frctl {
 	void		*mlx;
 	void		*win;
 	char		type;
-	double		xmin;
-	double		xmax;
-	double		ymin;
-	double		ymax;
+	char		is_use_param;
+	double		rmin;
+	double		rmax;
+	double		imin;
+	double		imax;
 	double		zoom;
 	double		offx;
 	double		offy;
 	int			itermax;
+	t_cmplx		julia_c;
 	t_clrset	clrset;
 	t_data		data;
 }				t_frctl;
@@ -88,10 +90,10 @@ typedef struct s_frctl {
 /*
 *** main.c ***
 */
+double	ft_atof(const char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	init_vars(t_frctl *frctl, char *argv);
+void	init_vars(t_frctl *frctl, char **argv);
 void	init_viewset(t_frctl *frctl);
-void	draw_fractol(t_frctl *frctl, t_data *data);
 
 /*
 *** hook.c ***
@@ -107,6 +109,7 @@ void	screen_to_world(t_point *point, t_cmplx *cmplx, t_frctl *fr);
 void	julia(t_frctl *frctl, t_data *data, t_point point);
 void	mandelbrot(t_frctl *frctl, t_data *data, t_point point);
 void	spider(t_frctl *frctl, t_data *data, t_point point);
+void	draw_fractol(t_frctl *frctl, t_data *data);
 
 /*
 *** color.c ***

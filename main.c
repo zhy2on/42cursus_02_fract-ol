@@ -6,11 +6,38 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/03 16:47:20 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/05 16:34:51 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+
+double	ft_atof(const char *str)
+{
+	int				sign;
+	unsigned int	n1;
+	unsigned int	n2;
+	double			i;
+
+	sign = 1;
+	n1 = 0;
+	n2 = 0;
+	i = 1;
+	if (*str == '-')
+	{
+		sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+		n1 = n1 * 10 + (*str++ - '0');
+	str++;
+	while (*str >= '0' && *str <= '9')
+	{
+		n2 = n2 * 10 + (*str++ - '0');
+		i *= 0.1;
+	}
+	return (sign * (n1 + n2 * i));
+}
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -25,67 +52,53 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-void	draw_fractol(t_frctl *frctl, t_data *data)
-{
-	t_point	point;
-
-	point.y = -1;
-	while (++point.y < WIN_H)
-	{
-		point.x = -1;
-		while (++point.x < WIN_W)
-		{
-			if (frctl->type == 1)
-				julia(frctl, data, point);
-			else if (frctl->type == 2)
-				mandelbrot(frctl, data, point);
-			else
-				spider(frctl, data, point);
-		}
-	}
-	mlx_put_image_to_window(frctl->mlx, frctl->win, data->img, 0, 0);
-}
-
 void	init_viewset(t_frctl *frctl)
 {
 	if (frctl->type == 1)
 	{
-		frctl->xmin = -2.1;
-		frctl->xmax = 1.9;
-		frctl->ymin = -1.2;
-		frctl->ymax = 1.2;
+		frctl->rmin = -2.1;
+		frctl->rmax = 1.9;
+		frctl->imin = -1.2;
+		frctl->imax = 1.2;
 	}
 	else if (frctl->type == 2)
 	{
-		frctl->xmin = -2.7;
-		frctl->xmax = 1.2;
-		frctl->ymin = -1.1;
-		frctl->ymax = 1.1;
+		frctl->rmin = -2.7;
+		frctl->rmax = 1.2;
+		frctl->imin = -1.1;
+		frctl->imax = 1.1;
 	}
 	else if (frctl->type == 3)
 	{
-		frctl->xmin = -3.0;
-		frctl->xmax = 1.0;
-		frctl->ymin = -1.2;
-		frctl->ymax = 1.2;
+		frctl->rmin = -3.0;
+		frctl->rmax = 1.0;
+		frctl->imin = -1.2;
+		frctl->imax = 1.2;
 	}
 	frctl->offx = 0;
 	frctl->offy = 0;
 	frctl->zoom = 1.0;
 }
 
-void	init_vars(t_frctl *frctl, char *argv)
+void	init_vars(t_frctl *frctl, char **argv)
 {
-	if (argv && ft_strncmp(argv, "julia", 5) == 0)
+	frctl->is_use_param = 0;
+	if (argv[1] && ft_strncmp(argv[1], "julia", 5) == 0)
 		frctl->type = 1;
-	else if (argv && ft_strncmp(argv, "mandelbrot", 10) == 0)
+	else if (argv[1] && ft_strncmp(argv[1], "mandelbrot", 10) == 0)
 		frctl->type = 2;
-	else if (argv && ft_strncmp(argv, "spider", 6) == 0)
+	else if (argv[1] && ft_strncmp(argv[1], "spider", 6) == 0)
 		frctl->type = 3;
 	else
 	{
 		write(1, "Usage: ./fractol + 'julia' or 'mandelbrot' or 'spider'\n", 56);
 		exit(0);
+	}
+	if (frctl->type == 1 && argv[2] && argv[3])
+	{
+		frctl->is_use_param = 1;
+		frctl->julia_c.r = ft_atof(argv[2]);
+		frctl->julia_c.i = ft_atof(argv[3]);
 	}
 	frctl->mlx = mlx_init();
 	frctl->win = mlx_new_window(frctl->mlx, WIN_W, WIN_H, "jihoh's fractol");
@@ -100,8 +113,7 @@ int	main(int argc, char **argv)
 {
 	t_frctl	frctl;
 
-	argc++;
-	init_vars(&frctl, argv[1]);
+	init_vars(&frctl, argv);
 	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_hook, &frctl);
 	mlx_hook(frctl.win, ON_MOUSEDOWN, 1L << 2, mouse_hook, &frctl);
 	draw_fractol(&frctl, &frctl.data);

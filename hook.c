@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:09:52 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/03 16:49:01 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/05 16:30:45 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	world_to_screen(t_cmplx *cmplx, t_point *point, t_frctl *fr)
 {
-	double	xscale;
-	double	yscale;
+	double	rscale;
+	double	iscale;
 
-	xscale = (fr->xmax - fr->xmin) / WIN_W;
-	yscale = (fr->ymax - fr->ymin) / WIN_H;
-	point->x = (cmplx->r - fr->xmin) / fr->zoom / xscale - fr->offx;
-	point->y = (cmplx->i - fr->ymin) / fr->zoom / yscale - fr->offy;
+	rscale = (fr->rmax - fr->rmin) / WIN_W;
+	iscale = (fr->imax - fr->imin) / WIN_H;
+	point->x = (cmplx->r - fr->rmin) / fr->zoom / rscale - fr->offx;
+	point->y = (cmplx->i - fr->imin) / fr->zoom / iscale - fr->offy;
 }
 
 int	mouse_hook(int button, int x, int y, t_frctl *frctl)
