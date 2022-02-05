@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/05 16:34:51 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/05 17:50:26 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 double	ft_atof(const char *str)
 {
-	int				sign;
-	unsigned int	n1;
-	unsigned int	n2;
+	double			sign;
+	unsigned int	num;
 	double			i;
 
 	sign = 1;
-	n1 = 0;
-	n2 = 0;
+	num = 0;
 	i = 1;
 	if (*str == '-')
 	{
@@ -29,14 +27,14 @@ double	ft_atof(const char *str)
 		str++;
 	}
 	while (*str >= '0' && *str <= '9')
-		n1 = n1 * 10 + (*str++ - '0');
+		num = num * 10 + (*str++ - '0');
 	str++;
 	while (*str >= '0' && *str <= '9')
 	{
-		n2 = n2 * 10 + (*str++ - '0');
+		num = num * 10 + (*str++ - '0');
 		i *= 0.1;
 	}
-	return (sign * (n1 + n2 * i));
+	return (sign * num * i);
 }
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
