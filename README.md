@@ -1,5 +1,10 @@
 # 42cursus_02_fract-ol
 
+|![image](https://user-images.githubusercontent.com/52701529/153381937-78a7e3ed-ef7d-49cf-aea8-c92ef4e0d66a.png)|![image](https://user-images.githubusercontent.com/52701529/153383091-0b30831c-9bec-4792-9320-5f87267ed538.png)|![image](https://user-images.githubusercontent.com/52701529/153388601-a8a89e00-614f-435d-93a1-f5d9964e73ca.png)|
+|----------|--------|--------|
+|![image](https://user-images.githubusercontent.com/52701529/153405597-9d8d0421-a24b-4492-ab64-141c9f9417ad.png)|![image](https://user-images.githubusercontent.com/52701529/153405927-b9d11166-8f18-4116-b467-c68fb7fed3f2.png)|![image](https://user-images.githubusercontent.com/52701529/153406020-a92b0486-935f-4575-baea-9791b51d2a8b.png)|
+|![image](https://user-images.githubusercontent.com/52701529/153405872-3d45232a-574b-46f2-bcc1-9610f0ea1a89.png)|![image](https://user-images.githubusercontent.com/52701529/153405956-70f6319b-ec2a-40bf-9b34-1cfac0d81518.png)|![image](https://user-images.githubusercontent.com/52701529/153406064-704cb338-0b30-4acd-94ba-183a3962f0e5.png)|
+
 ## Fractal이란?
 
 * 자기유사성을 띄는 형태
@@ -147,11 +152,3 @@ void	world_to_screen(t_cmplx *cmplx, t_point *point, t_frctl *fr)
 |---|---|
 
 * +추가로 시스템 환경에 따른 차이인건지 아직 명확히 밝히진 못했지만.. 내 m1 맥북 기준 mlx 마우스 이벤트 처리 때 마우스 클릭이나 이동시 y좌표와 스크롤시 찍히는 y좌표가 반대였다.. 출력할 수 있는 부분은 출력해 가면서 시스템 상의 결과를 잘 확인해보며 테스트 하기..
-
-
-## color palette별 화면!
-
-|![image](https://user-images.githubusercontent.com/52701529/153381937-78a7e3ed-ef7d-49cf-aea8-c92ef4e0d66a.png)|![image](https://user-images.githubusercontent.com/52701529/153383091-0b30831c-9bec-4792-9320-5f87267ed538.png)|![image](https://user-images.githubusercontent.com/52701529/153388601-a8a89e00-614f-435d-93a1-f5d9964e73ca.png)|
-|----------|--------|--------|
-|![image](https://user-images.githubusercontent.com/52701529/153405597-9d8d0421-a24b-4492-ab64-141c9f9417ad.png)|![image](https://user-images.githubusercontent.com/52701529/153405927-b9d11166-8f18-4116-b467-c68fb7fed3f2.png)|![image](https://user-images.githubusercontent.com/52701529/153406020-a92b0486-935f-4575-baea-9791b51d2a8b.png)|
-|![image](https://user-images.githubusercontent.com/52701529/153405872-3d45232a-574b-46f2-bcc1-9610f0ea1a89.png)|![image](https://user-images.githubusercontent.com/52701529/153405956-70f6319b-ec2a-40bf-9b34-1cfac0d81518.png)|![image](https://user-images.githubusercontent.com/52701529/153406064-704cb338-0b30-4acd-94ba-183a3962f0e5.png)|
