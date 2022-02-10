@@ -22,7 +22,7 @@
 
 * 대표적인 시간매개형 프랙탈. mandelbrot set의 색은 각 점에서의 발산 속도에 따른다
 * https://en.wikipedia.org/wiki/Mandelbrot_set
-* 
+* $Z_{n+1} = {Z_n}^2 + C$
 
 * 수열이 발산하지 않을 복소수 C의 집합으로 정의 된다
 
