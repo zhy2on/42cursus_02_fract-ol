@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/06 18:27:28 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/10 18:08:41 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,16 @@ double	ft_atof(const char *str)
 	return (sign * num * i);
 }
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	while (n && *s1 && (*s1 == *s2))
+	while (*s1 && *s2)
 	{
+		if (*s1 != *s2)
+			return (*s1 - *s2);
 		s1++;
 		s2++;
-		n--;
 	}
-	if (n)
-		return ((unsigned char)(*s1) - (unsigned char)(*s2));
-	return (0);
+	return (*s1 - *s2);
 }
 
 void	init_viewset(t_frctl *frctl)
@@ -81,11 +80,11 @@ void	init_viewset(t_frctl *frctl)
 void	init_vars(t_frctl *frctl, char **argv)
 {
 	frctl->is_use_param = 0;
-	if (argv[1] && ft_strncmp(argv[1], "julia", 5) == 0)
+	if (argv[1] && ft_strcmp(argv[1], "julia") == 0)
 		frctl->type = 1;
-	else if (argv[1] && ft_strncmp(argv[1], "mandelbrot", 10) == 0)
+	else if (argv[1] && ft_strcmp(argv[1], "mandelbrot") == 0)
 		frctl->type = 2;
-	else if (argv[1] && ft_strncmp(argv[1], "spider", 6) == 0)
+	else if (argv[1] && ft_strcmp(argv[1], "spider") == 0)
 		frctl->type = 3;
 	else
 	{

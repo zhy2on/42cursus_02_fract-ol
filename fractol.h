@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/05 16:29:32 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/10 18:08:17 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_frctl {
 *** main.c ***
 */
 double	ft_atof(const char *str);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
 void	init_vars(t_frctl *frctl, char **argv);
 void	init_viewset(t_frctl *frctl);
 
