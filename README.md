@@ -17,7 +17,8 @@
 
 * 대표적인 시간매개형 프랙탈. mandelbrot set의 색은 각 점에서의 발산 속도에 따른다
 * https://en.wikipedia.org/wiki/Mandelbrot_set
-* $Z_{n+1} = {Z_n}^2 + C$
+* 
+
 * 수열이 발산하지 않을 복소수 C의 집합으로 정의 된다
 
 ## Julia set
@@ -66,7 +67,7 @@ z.i = 2 * tmp.r * tmp.i + c.i;
 * 먼저 screen상의 좌표를 world상의 좌표로 변환하는 방법을 알 필요가 있다.
 * mlx hook을 사용하여 마우스 이벤트를 처리할 때 screen상의 x,y좌표값을 받아오게 된다.
 * 이를 실제로 내가 처리하고 싶은 world상의 좌표로 계산해 주어야 한다.
-* fractal은 복소평면상에 나타낼 것이기 때문에 내가 원하는 (rmin~rmax), (imin~rmax) 상의 좌표로 바꿔준다.
+* fractal은 복소평면상에 나타낼 것이기 때문에 내가 원하는 (rmin ~ rmax), (imin ~ rmax) 상의 좌표로 바꿔준다.
 * arduino의 map함수를 참고하면 쉽다.
 
 ```c
