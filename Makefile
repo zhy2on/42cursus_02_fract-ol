@@ -6,12 +6,13 @@
 #    By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/03 01:01:21 by jihoh             #+#    #+#              #
-#    Updated: 2022/02/03 03:21:31 by jihoh            ###   ########.fr        #
+#    Updated: 2022/02/06 18:46:44 by jihoh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -lmlx -framework OpenGL -framework AppKit -Werror -Wextra -Wall
+CFLAGS = -Werror -Wextra -Wall
+MLXFLAGS = -lmlx -framework OpenGL -framework AppKit
 
 NAME = fractol
 
@@ -21,11 +22,11 @@ OBJS = $(SRCS:.c=.o)
 all : $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(MLXFLAGS) $(OBJS) -o $@
 	@printf '\033[32m[ ✔ ] %s\n\033[0m' "done"
 
 .c.o:
-	$(CC) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	@rm -rf $(OBJS)

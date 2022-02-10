@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:53:19 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/05 17:50:26 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/06 18:27:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	main(int argc, char **argv)
 {
 	t_frctl	frctl;
 
+	argc++;
 	init_vars(&frctl, argv);
 	mlx_hook(frctl.win, ON_KEYDOWN, 1L << 0, key_hook, &frctl);
 	mlx_hook(frctl.win, ON_MOUSEDOWN, 1L << 2, mouse_hook, &frctl);
