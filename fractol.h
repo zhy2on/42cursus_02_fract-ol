@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:56:36 by jihoh             #+#    #+#             */
-/*   Updated: 2022/02/10 18:08:17 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/02/12 18:38:02 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <mlx.h>
 # include <unistd.h>
 
-# define WIN_W	1280
-# define WIN_H	720
+# define WIN_W	960
+# define WIN_H	540
 
 enum {
 	ON_KEYDOWN = 2,
