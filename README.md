@@ -32,7 +32,7 @@
 * julia set도 시간매개형 프랙탈. 각 점에서의 발산 속도에 따라 색이 정해진다
 * $Z_{n+1} = {Z_n}^2 + C$
 * mandelbrot set의 식과 같다. 다만 다른 점은 복소수 Z의 집합이라는 것
-* C값을 임의로 바꾸어 주면 다양한 모습의 julia set을 관찰할 수 있다
+* C값을 임의로 바꾸어 주면 다양한 모습의 julia set을 관찰할 수 있다 https://en.wikipedia.org/wiki/Julia_set#Quadratic_polynomials
 * fract-ol에서도 파라미터 값에 따라 julia set을 recompile할 수 있도록 만들라고 나와있다
 
 ## Spider set
