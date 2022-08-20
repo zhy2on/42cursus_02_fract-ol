@@ -48,7 +48,7 @@
 ### 주요 알고리즘
 * https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings
 * 위키피디아의 computer drawings 파트에 수도 코드가 잘 나와있다.
-* 각 점마다 while문을 돌며 해당하는 프랙탈 수식에 따라 while문을 탈출할 때의 iter값에 따라 색상을 정한다. (각 점이 발산하는 속도 - 시간매개형 프랙탈)
+* 각 점마다 while문을 돌며 해당하는 프랙탈 수식에 따라 while문을 탈출할 때의 iter값에 따라 색상을 정한다. (각 점이 발산하는 속도 -> 시간매개형 프랙탈)
 * $Z_n$의 발산 조건($|Z| > 2$) 외에도 발산 하지 않을 때 적절한 max_iteration값을 통해 탈출 할 수 있게 해야 한다.
 
 ### 복소수 처리
